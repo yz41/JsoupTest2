@@ -6,37 +6,32 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebResponse;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.jsoup.Jsoup;
 
+import java.io.IOException;
 
 
 public class HtmlParseUtil2 {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IOException {
 
 
-        String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=1&cnt=10&attr=&tp=1&orderby=1";
+        String url1 = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=1&cnt=10&attr=&tp=1&orderby=1";
         String url2 = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=2&cnt=10&attr=&tp=1&orderby=1";
         String url3 = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=3&cnt=10&attr=&tp=1&orderby=1";
-        final WebClient webClient = new WebClient(BrowserVersion.CHROME);
+//        String InboxJson= Jsoup.connect(url)
+//                .timeout(1000000)
+//                .header("Accept", "text/javascript")
+//                .userAgent("Mozilla/5.0 (Windows NT 6.1; rv:40.0) Gecko/20100101 Firefox/40.0")
+//                .get()
+//                .body()
+//                .text();
+        String json1 = Jsoup.connect(url1).ignoreContentType(true).execute().body();
+        String json2 = Jsoup.connect(url2).ignoreContentType(true).execute().body();
+        String json3 = Jsoup.connect(url3).ignoreContentType(true).execute().body();
+        System.out.println(json1);
+        System.out.println(json2);
+        System.out.println(json3);
 
-        webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
-        webClient.getOptions().setActiveXNative(false);//不启用ActiveX
-        webClient.getOptions().setCssEnabled(false);//是否启用CSS, 因为不需要展现页面, 所以不需要启用
-        webClient.getOptions().setJavaScriptEnabled(true); //很重要，启用JS
-        webClient.getOptions().setDownloadImages(false);//不下载图片
-        webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
-        HtmlPage page = null;
-        try {
-            page = webClient.getPage(url);//尝试加载给出的网页
-            String contentAsString = page.getWebResponse().getContentAsString();
-            System.out.println(contentAsString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            webClient.close();
-        }
-
-        webClient.waitForBackgroundJavaScript(30000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
 
 
     }
