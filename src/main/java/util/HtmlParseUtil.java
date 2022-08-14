@@ -64,8 +64,8 @@ public class HtmlParseUtil {
 //        DomElement elementByName = page.getElementByName("xpage-more-btn");
 //        System.out.println("______________");
 //        System.out.println(elementByName);
-        Page click = ((DomElement) page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div").get(0)).click();
-        System.out.println(click);
+//        Page click = ((DomElement) page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div").get(0)).click();
+//        System.out.println(click);
 //        ((DomElement) page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div").get(0)).click();
 //        String s = next.asXml();
 //        Document parse1 = Jsoup.parse(s);
