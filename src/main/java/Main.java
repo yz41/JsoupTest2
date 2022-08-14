@@ -1,5 +1,5 @@
 import pojo.Content;
-import util.HtmlParseUtil;
+import util.MyWebClient;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -15,7 +15,8 @@ public class Main {
 
 
 
-            List<Content> contents = new HtmlParseUtil().parseXH();
+//            List<Content> contents = new HtmlParseUtil().parseXH();
+            List<Content> contents = new MyWebClient().getData();
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < contents.size(); i++) {
 

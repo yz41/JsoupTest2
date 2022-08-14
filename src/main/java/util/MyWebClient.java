@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class MyWebClient {
 
-    static List<Content> getData() throws IOException {
+    public static List<Content> getData() throws IOException {
         WebClient webClient = new WebClient();
         List<Content> data = new ArrayList<>();
         String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=%s&cnt=10&attr=&tp=1&orderby=1";
