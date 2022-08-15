@@ -65,6 +65,7 @@ public class HtmlParseUtil2 {
         HtmlPage page = null;
         try {
             page = webClient.getPage(url);//尝试加载给出的网页
+            webClient.waitForBackgroundJavaScript(30000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +73,6 @@ public class HtmlParseUtil2 {
             webClient.close();
         }
 
-        webClient.waitForBackgroundJavaScript(30000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
 
 //        Object o = page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div/img").get(0);
 //        System.out.println(o);
