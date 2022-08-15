@@ -16,20 +16,43 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import pojo.Content;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 public class HtmlParseUtil2 {
     public static void main(String[] args)  {
 
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter("信息.txt"));
+            String url = "http://www.xinhuanet.com/legal/ej.htm?page=fzzt";
+//            String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=%s&cnt=10&attr=&tp=1&orderby=1";
 
-        String url = "http://www.xinhuanet.com/legal/ej.htm?page=fzzt";
+            List<Content> contents = new HtmlParseUtil2().getData(url);
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < contents.size(); i++) {
 
+                stringBuffer.append(contents.get(i).getTitle() + "\t" + contents.get(i).getTime());
+                stringBuffer.append("\n");
+            }
+            out.write(String.valueOf(stringBuffer));
+            out.close();
+            System.out.println("Html信息爬取成功！");
+        } catch (IOException e) {
+        }
+
+
+    }
+
+    static List<Content> getData(String url){
+//        ArrayList<Content> arrayList = new ArrayList<>();
+
+
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);//关闭警告
         final WebClient webClient = new WebClient(BrowserVersion.CHROME);
 
         webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
@@ -50,9 +73,9 @@ public class HtmlParseUtil2 {
         }
 
         webClient.waitForBackgroundJavaScript(30000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
-//        WebResponse pageWebResponse = page.getWebResponse();
-//        System.out.println(pageWebResponse);
 
+//        Object o = page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div/img").get(0);
+//        System.out.println(o);
         String pageXml = page.asXml();//直接将加载完成的页面转换成xml格式的字符串
         Document parse = Jsoup.parse(pageXml);
 
@@ -69,7 +92,8 @@ public class HtmlParseUtil2 {
             arrayList.add(content);
         }
         System.out.println(arrayList);
-
+//        WebResponse pageWebResponse = page.getWebResponse();
+//        System.out.println(pageWebResponse);
         //        Elements elementsByClass = parse.getElementsByClass("xpage-more-btn");
 //        Elements img = elementsByClass.get(0).getElementsByTag("img");
 //
@@ -77,5 +101,6 @@ public class HtmlParseUtil2 {
 
 //        return arrayList;
 //        System.out.println(li);
+        return arrayList;
     }
 }

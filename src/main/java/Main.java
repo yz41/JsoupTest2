@@ -12,7 +12,9 @@ public class Main {
 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("信息.txt"));
+            //        String url = "http://www.xinhuanet.com/legal/ej.htm?page=fzzt";
             String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=%s&cnt=10&attr=&tp=1&orderby=1";
+
             List<Content> contents = new MyWebClient().getData(url);
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < contents.size(); i++) {
