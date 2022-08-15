@@ -1,11 +1,9 @@
 package util;
 
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.*;
+import com.gargoylesoftware.htmlunit.html.*;
+import net.sf.json.JSON;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +18,7 @@ import java.io.*;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,11 +47,11 @@ public class HtmlParseUtil2 {
 
     }
 
-    static List<Content> getData(String url){
+    static List<Content> getData(String url) throws IOException {
 //        ArrayList<Content> arrayList = new ArrayList<>();
 
 
-        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);//关闭警告
+//        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);//关闭警告
         final WebClient webClient = new WebClient(BrowserVersion.CHROME);
 
         webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
@@ -63,9 +62,10 @@ public class HtmlParseUtil2 {
         webClient.getOptions().setDownloadImages(false);//不下载图片
         webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
         HtmlPage page = null;
+
         try {
             page = webClient.getPage(url);//尝试加载给出的网页
-            webClient.waitForBackgroundJavaScript(30000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
+            webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞3秒,等待异步JS执行结束
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,9 +73,21 @@ public class HtmlParseUtil2 {
             webClient.close();
         }
 
-
 //        Object o = page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div/img").get(0);
 //        System.out.println(o);
+        HtmlImage firstByXPath =(HtmlImage) page.getFirstByXPath("/html/body/div[4]/div/div[2]/div/div/div/img");//定位到图片
+//        Page click = firstByXPath.click();//点击图片
+//        firstByXPath.setAttribute("");//这里应该要写什么东西
+        WebResponse webResponse = firstByXPath.click().getWebResponse();//获取点击图片后返回的结果
+//        WebResponse webResponse = click.getWebResponse();
+        String contentAsString = webResponse.getContentAsString(StandardCharsets.UTF_8);
+//        JSONObject jsonObject = JSONObject.fromObject(firstByXPath.click());
+        System.out.println(contentAsString);
+
+
+
+
+
         String pageXml = page.asXml();//直接将加载完成的页面转换成xml格式的字符串
         Document parse = Jsoup.parse(pageXml);
 
@@ -91,7 +103,9 @@ public class HtmlParseUtil2 {
             content.setTime(time);
             arrayList.add(content);
         }
+        System.out.println("+++++++++++++++");
         System.out.println(arrayList);
+        System.out.println("++++++++++++++++++++");
 //        WebResponse pageWebResponse = page.getWebResponse();
 //        System.out.println(pageWebResponse);
         //        Elements elementsByClass = parse.getElementsByClass("xpage-more-btn");
