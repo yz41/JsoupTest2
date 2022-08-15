@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 
 public class MyWebClient {
 
-    public static List<Content> getData() throws IOException {
+    public static List<Content> getData(String url) throws IOException {
         WebClient webClient = new WebClient();
         List<Content> data = new ArrayList<>();
-        String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=%s&cnt=10&attr=&tp=1&orderby=1";
+//        String url = "http://da.wa.news.cn/nodeart/page?nid=11227931&pgnum=%s&cnt=10&attr=&tp=1&orderby=1";
         for (int i = 1; i <= 3; i++) {
             String dynamicUrl = String.format(url, i);
             Page page = webClient.getPage(dynamicUrl);
@@ -32,11 +32,11 @@ public class MyWebClient {
             List<String> titleList = new ArrayList<>();
             List<String> timeList = new ArrayList<>();
 
-            while (titleMatcher.find()){
+            while (titleMatcher.find()) {
                 String titleBeforeDeal = titleMatcher.group();
                 titleList.add(titleBeforeDeal.split(":")[1].substring(1));
             }
-            while (timeMatcher.find()){
+            while (timeMatcher.find()) {
                 String timeBeforeDeal = timeMatcher.group();
                 timeList.add(timeBeforeDeal.split(":")[1].substring(1));
             }
@@ -51,7 +51,7 @@ public class MyWebClient {
     }
 
     public static void main(String[] args) throws IOException {
-        List<Content> data = getData();
-        data.forEach(System.out::println);
+//        List<Content> data = getData();
+//        data.forEach(System.out::println);
     }
 }
