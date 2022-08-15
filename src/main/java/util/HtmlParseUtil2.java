@@ -64,7 +64,13 @@ public class HtmlParseUtil2 {
         HtmlPage page = null;
 
         try {
+//            page = null;
+
             page = webClient.getPage(url);//尝试加载给出的网页
+//            HtmlPage page2 = webClient.getPage(url);
+//            WebResponse webResponse2 = page2.getWebResponse();
+//            String contentAsString = webResponse2.getContentAsString(StandardCharsets.UTF_8);
+//            System.out.println(contentAsString.toString());
             webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞3秒,等待异步JS执行结束
 
         } catch (Exception e) {
@@ -75,19 +81,21 @@ public class HtmlParseUtil2 {
 
 //        Object o = page.getByXPath("/html/body/div[4]/div/div[2]/div/div/div/img").get(0);
 //        System.out.println(o);
-        HtmlImage firstByXPath =(HtmlImage) page.getFirstByXPath("/html/body/div[4]/div/div[2]/div/div/div/img");//定位到图片
+//        HtmlDivision htmlDivision = (HtmlDivision)page.getFirstByXPath("/html/body/div[4]/div/div[2]/div/div/div/img");//定位到图片
+//        Page click = htmlDivision.click();
+//        WebResponse webResponse = click.getWebResponse();
+//        webResponse.to
 //        Page click = firstByXPath.click();//点击图片
 //        firstByXPath.setAttribute("");//这里应该要写什么东西
-        WebResponse webResponse = firstByXPath.click().getWebResponse();//获取点击图片后返回的结果
+//        System.out.println(webResponse.toString());
+//        WebResponse webResponse = firstByXPath.click().getWebResponse();//获取点击图片后返回的结果
 //        WebResponse webResponse = click.getWebResponse();
-        String contentAsString = webResponse.getContentAsString(StandardCharsets.UTF_8);
-//        JSONObject jsonObject = JSONObject.fromObject(firstByXPath.click());
-        System.out.println(contentAsString);
+//        String contentAsString = webResponse.getContentAsString(StandardCharsets.UTF_8);
+////        JSONObject jsonObject = JSONObject.fromObject(firstByXPath.click());
+//        System.out.println(contentAsString);
 
-
-
-
-
+//        WebResponse webResponse = page.getWebResponse();
+//        System.out.println(webResponse.toString());
         String pageXml = page.asXml();//直接将加载完成的页面转换成xml格式的字符串
         Document parse = Jsoup.parse(pageXml);
 
@@ -103,9 +111,9 @@ public class HtmlParseUtil2 {
             content.setTime(time);
             arrayList.add(content);
         }
-        System.out.println("+++++++++++++++");
-        System.out.println(arrayList);
-        System.out.println("++++++++++++++++++++");
+//        System.out.println("+++++++++++++++");
+//        System.out.println(arrayList);
+//        System.out.println("++++++++++++++++++++");
 //        WebResponse pageWebResponse = page.getWebResponse();
 //        System.out.println(pageWebResponse);
         //        Elements elementsByClass = parse.getElementsByClass("xpage-more-btn");
